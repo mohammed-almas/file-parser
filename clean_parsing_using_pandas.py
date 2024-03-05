@@ -7,10 +7,11 @@ logging.basicConfig(format="%(levelname)s: %(message)s", level=logging.INFO)
 logger = logging.getLogger()
 
 
-def format_account(value):
+def format_account(value: str) -> str:
     """
-    Formats the long integer values under Account column with more than 11 digits to exponential form.
-    
+    Formats the long integer values under Account column with more than
+    11 digits to exponential form.
+
     Keyword arguments:
     value -- unformatted Account value
     """
@@ -21,13 +22,15 @@ def format_account(value):
 
         return value
 
-    except Exception:
-        logger.exception("Error occured while formatting account value")
+    except ValueError as err:
+        logger.exception("Error occured while formatting account value: %s", err)
+        raise err
 
 
-def format_lc_amnt(value):
+def format_lc_amnt(value: str) -> str:
     """
-    Formats the values under LC amnt column correcting the negative sign and removing thousands comma separator.
+    Formats the values under LC amnt column correcting the negative sign
+    and removing thousands comma separator.
 
     Keyword arguments:
     value -- unformatted LC amount value
@@ -40,13 +43,15 @@ def format_lc_amnt(value):
 
         return value
 
-    except Exception:
-        logger.exception("Error occured while formatting LC amount value")
+    except ValueError as err:
+        logger.exception("Error occured while formatting LC amount value: %s", err)
+        raise err
 
 
-def format_rows(data_list):
+def format_rows(data_list: list[str]) -> list[list[str]]:
     """
-    Omits all the unrequired data and whitespaces and returns the formatted values under each row of the file content.
+    Omits all the unrequired data and whitespaces and returns the formatted
+    values under each row of the file content.
 
     Keyword arguments:
     data_list -- list of data from content of the input file
@@ -58,17 +63,13 @@ def format_rows(data_list):
 
     try:
         for row in data_list:
-            # Removing unrequired rows
-            if len(row) <= 3:
+            # Removing unrequired and duplicate header rows
+            if len(row) <= 3 or (len(cleaned_data) != 0 and "Stat" in row[1]):
                 continue
 
-            # Removing duplicate header rows
-            if (len(cleaned_data) != 0 and "Stat" in row[1]):
-                continue
-            
             # Formatting values in each row
             row_data = [value.strip() for value in row[1:-1]]
-            
+
             if "Stat" in row_data:
                 account_col_index = row_data.index("Account")
                 lc_amnt_col_index = row_data.index("LC amnt")
@@ -80,11 +81,12 @@ def format_rows(data_list):
 
         return cleaned_data
 
-    except Exception:
-        logger.exception("Error occured while formatting rows")
+    except ValueError as err:
+        logger.exception("Error occured while formatting rows: %s", err)
+        raise err
 
 
-def parse_excel_to_csv(input_file, output_file):
+def parse_excel_to_csv(input_file: str, output_file: str) -> None:
     """
     Parses the input file, formats the data and writes the cleaned up data to an output csv file.
 
@@ -94,7 +96,7 @@ def parse_excel_to_csv(input_file, output_file):
     """
 
     try:
-        logging.info(f"Parsing the given input file: {input_file}")
+        logging.info("Parsing the given input file: %s", input_file)
 
         # Reading the content of the input file
         content_df = pandas.read_csv(input_file, delimiter="~", names=["data"])
@@ -110,20 +112,21 @@ def parse_excel_to_csv(input_file, output_file):
         # Writing the dataframe data to csv file
         df.to_csv(output_file, header=True, index=False, sep=";")
 
-        logging.info(f"Output csv file generated with cleaned up data: {output_file}")
+        logging.info("Output csv file generated with cleaned up data: %s", output_file)
 
-    except Exception:
-        logger.exception("Error occured while parsing excel file to csv")
+    except ValueError as err:
+        logger.exception("Error occured while parsing excel file to csv: %s", err)
+        raise err
+
+    except FileNotFoundError as err:
+        logger.exception("Error occured while file handling: %s", err)
+        raise err
 
 
 if __name__ == "__main__":
     EXCEL_FILE = "forParsing_task.xls"
     OUTPUT_FILE = "result_using_pandas.csv"
 
-    try:
-        start_time = timeit.default_timer()
-        parse_excel_to_csv(EXCEL_FILE, OUTPUT_FILE)
-        logger.info(f"Time taken: {timeit.default_timer() - start_time: .4f} seconds")
-
-    except Exception:
-        logger.exception("Error parsing file")
+    start_time = timeit.default_timer()
+    parse_excel_to_csv(EXCEL_FILE, OUTPUT_FILE)
+    logger.info("Time taken: %.4f seconds", timeit.default_timer() - start_time)

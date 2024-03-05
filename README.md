@@ -8,7 +8,7 @@ This project parses an input file, formats the data to a proper structure and ge
 ## Getting Started
 
 ### Prerequisites
-- Python 3.8+
+- Python 3.9+
 - Virtualenv
 
 ### Installation Steps
@@ -37,12 +37,12 @@ This project parses an input file, formats the data to a proper structure and ge
 ### Running the project
 - To parse with pandas library, run the project using the following command:
     ```sh
-    py clean_parsing_using_pandas.py
+    python clean_parsing_using_pandas.py
     ```
 
 - To parse with python native libraries, run the project using the following command:
     ```sh
-    py clean_parsing.py
+    python clean_parsing.py
     ```
 
 ### Input/Output file:
@@ -56,5 +56,6 @@ This project parses an input file, formats the data to a proper structure and ge
 
 - After multiple runs, it has been noticed from the program info logs that the execution time for script using pandas library was a little bit more than that of script using native libaries by a few milliseconds . Hence, parsing with native libraries performed better than pandas library.
 
-        Script run time with Pandas library: 0.0248 seconds
-        Script run time with native libaries: 0.0121 seconds
+        Script run time with Pandas library: 0.0085 seconds
+        Script run time with native libaries: 0.0045 seconds
+    This data is as per measured on system specs: Windows 10 16GB RAM i7-13th Gen
