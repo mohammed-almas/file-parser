@@ -56,6 +56,6 @@ This project parses an input file, formats the data to a proper structure and ge
 
 - After multiple runs, it has been noticed from the program info logs that the execution time for script using pandas library was a little bit more than that of script using native libaries by a few milliseconds . Hence, parsing with native libraries performed better than pandas library.
 
-        Script run time with Pandas library: 0.0085 seconds
-        Script run time with native libaries: 0.0045 seconds
+        Script run time with Pandas library: 0.0224 seconds
+        Script run time with native libaries: 0.0121 seconds
     This data is as per measured on system specs: Windows 10 16GB RAM i7-13th Gen
