@@ -68,6 +68,7 @@ def has_bad_data(row: str, bad_data: list[str]) -> bool:
         logger.exception("Error occured while iterating over provided bad data list: %s", err)
         raise err
 
+
 def format_rows(file_data: list[str]) -> list[str]:
     """
     Omits all the unrequired data and whitespaces and returns the formatted
@@ -90,7 +91,7 @@ def format_rows(file_data: list[str]) -> list[str]:
                 continue
 
             # Removing duplicate header lines
-            if (len(cleaned_data) != 0 and "Stat" in row):
+            if len(cleaned_data) != 0 and "Stat" in row:
                 continue
 
             # Formatting values in each row
