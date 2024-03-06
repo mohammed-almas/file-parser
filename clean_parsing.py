@@ -53,7 +53,6 @@ def has_bad_data(row: str, bad_data: list[str]) -> bool:
     row -- row string
     bad_data -- list of substrings of rows that needs to be filtered out
     """
-    bad_data = [None]
     try:
         for el in bad_data:
             if row.startswith(el):
