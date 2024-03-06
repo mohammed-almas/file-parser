@@ -21,7 +21,11 @@ def format_account(value: str) -> str:
         return value
 
     except ValueError as err:
-        logger.exception("Error occured while formatting account value: %s", err)
+        logger.exception("Error occured with value while formatting account value: %s", err)
+        raise err
+
+    except TypeError as err:
+        logger.exception("Error occured with value type while formatting account value: %s", err)
         raise err
 
 
@@ -41,7 +45,11 @@ def format_lc_amnt(value: str) -> str:
         return value
 
     except ValueError as err:
-        logger.exception("Error occured while formatting LC amount value: %s", err)
+        logger.exception("Error occured with value while formatting LC amount value: %s", err)
+        raise err
+
+    except TypeError as err:
+        logger.exception("Error occured with value type while formatting LC amount value: %s", err)
         raise err
 
 
@@ -61,11 +69,11 @@ def has_bad_data(row: str, bad_data: list[str]) -> bool:
         return False
 
     except ValueError as err:
-        logger.exception("Error occured while checking bad row: %s", err)
+        logger.exception("Error occured with value while checking bad row: %s", err)
         raise err
 
     except TypeError as err:
-        logger.exception("Error occured while iterating over provided bad data list: %s", err)
+        logger.exception("Error occured with value type while checking bad row: %s", err)
         raise err
 
 
@@ -110,7 +118,11 @@ def format_rows(file_data: list[str]) -> list[str]:
         return cleaned_data
 
     except ValueError as err:
-        logger.exception("Error occured while formatting rows: %s", err)
+        logger.exception("Error occured with value while formatting rows: %s", err)
+        raise err
+
+    except TypeError as err:
+        logger.exception("Error occured with value type while formatting rows: %s", err)
         raise err
 
 
@@ -139,7 +151,11 @@ def parse_excel_to_csv(input_file: str, output_file: str) -> None:
         logging.info("Output csv file generated with cleaned up data: %s", output_file)
 
     except ValueError as err:
-        logger.exception("Error occured while parsing excel file to csv: %s", err)
+        logger.exception("Error occured with value while parsing excel file to csv: %s", err)
+        raise err
+
+    except TypeError as err:
+        logger.exception("Error occured with value type while parsing excel file to csv: %s", err)
         raise err
 
     except FileNotFoundError as err:
